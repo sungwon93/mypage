@@ -2,7 +2,7 @@
 <html lang="en">
 
 <head>
-    <!-- 왜 css기본코드를 넣어야 가동될까? -->
+    <!-- 왜 css불러오기 코드를 넣어야 db가 가동될까>? -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
@@ -132,7 +132,7 @@
         });
     }
     
-    //DELETE
+    //DELETE 방식 (post기능으로 데이터만 삭제)
     function comment_delete(comment) {  
         let delcomment = comment
 
@@ -176,15 +176,10 @@
         <br><br>
         <div>
             <p class="commentchang">댓글창</p>
-
             <input id="comment" placeholder="댓글을 입력해 주세요."> <button onclick="save_insult()">등록</button>
             <br>
-
             <!-- 댓글달리는곳 -->
-            <div id="order-box">
-                <!-- <p class="commentcomment">댓글 내용</p>
-                <button onclick="comment_delete()" class="deleteform">삭제</button>
-                <h2></h2> -->
+            <div id="order-box">              
             </div>
         </div>
 
