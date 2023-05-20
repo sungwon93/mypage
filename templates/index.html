@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <!-- 왜 css기본코드를 넣어야 가동될까? -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+        crossorigin="anonymous"></script>
+    <title>내소개</title>
+</head>
+<style>
+    @import url('https://fonts.googleapis.com/css?family=Montserrat:100,200,300,400,500,600,700,800&display=swap');
+
+    * {
+        font-family: 'Montserrat';
+    }
+
+    .section1 {
+        margin-top: 50px;
+    }
+
+    .mainbox {
+        width: 800px;
+        padding: 30px;
+        margin: 30px;
+        margin-right: auto;
+        margin-left: auto;
+    }
+
+    h1 {
+        text-align: right;
+        font-size: 50px;
+        margin: 0px;
+        padding: 0px;
+    }
+
+    h2 {
+        margin-top: 10px;
+        color: green;
+        font-weight: 400;
+        border-bottom: 1px solid #3d3c3c;
+    }
+
+    .title {
+        text-align: right;
+    }
+
+    .photo {
+        border-radius: 10%;
+        width: 200px;
+        float: left;
+    }
+
+    .sns-photo {
+        width: 50px;
+    }
+
+    input {
+        border-width: 1px;
+        width: 500px;
+    }
+
+    .commentchang {
+        font-weight: bold;
+        font-size: 20px
+    }
+
+    .order-box {
+        margin-top: 30px;
+    }
+
+    .deleteform {
+        padding: 0px;
+        margin-bottom: 5px;
+        background-color: rgb(122, 197, 122);
+        border-color: aliceblue;
+        width: 50px;
+        height: 25px;
+    }
+
+    .commentcomment {
+        font-size: 18px;
+    }
+
+    .boder {
+        border-bottom: 1px solid #3d3c3c;
+    }
+</style>
+
+
+<script>
+    //POST 방식 (데이터를 보냄)
+    function save_insult() {
+        let comment = $('#comment').val()
+
+        let formData = new FormData();
+
+        formData.append("comment_give", comment);
+
+        fetch('/users', { method: "POST", body: formData }).then((res) => res.json()).then((data) => {
+            alert(data["msg"]);
+            window.location.reload()
+        })
+    }
+
+    //GET 방식 (데이터를 불러옴)
+    $(document).ready(function () {
+        show_comment();
+    });
+    function show_comment() {
+        fetch('/users').then((res) => res.json()).then((data) => {
+
+            let rows = data['result']
+            //$('order-box').empty()
+            rows.forEach((a) => {
+
+                let comment = a['comment']
+
+                let temp_html = `<div class="order-box">
+                                    <p class="commentcomment">${comment}</p>
+                                    <button onclick="comment_delete('${comment}')" class="deleteform">삭제</button>
+                                    <h2></h2>
+                                </div>`
+                $('#order-box').append(temp_html)
+            })
+        });
+    }
+    
+    //DELETE
+    function comment_delete(comment) {  
+        let delcomment = comment
+
+        let formData = new FormData();    
+        formData.append("comment_del",delcomment);
+
+        fetch('/users', { method: "DELETE", body: formData }).then((res) => res.json()).then((data) => {
+            alert(data["msg"]);
+        window.location.reload()
+        })
+    }
+   
+</script>
+
+<body>
+    <div class="mainbox">
+        <div>
+            <img class="photo" src="https://i.postimg.cc/MT4cW673/woo.png">
+            <h1>Woo SeongWon</h1>
+            <p class="title">개발왕이 될 자.</p>
+            <br><br><br><br>
+        </div>
+
+        <section class="section1">
+            <h2>Introduce</h2>
+            <p class="subtitle">안녕? 나는 최고의 개발자가 될 우성원이라고 해.</p><br>
+
+            <h2>취미</h2>
+            <p class="subtitle2">코딩과 등산, 캠핑 등 자연과 함께하는것</p><br>
+
+            <h2>특기</h2>
+            <p class="sns">글쎄,, 집요하게 파고듬이 있는것 같기도 하고</p><br>
+        </section>
+
+        <section>
+            <h2>SNS</h2>
+            <p class="comment">you can meet me!</p>
+            <a href="https://woo-developer.tistory.com/"><img src="https://i.postimg.cc/68YVpkW6/tstory.png"
+                    class="sns-photo"></p></a>
+        </section>
+        <br><br>
+        <div>
+            <p class="commentchang">댓글창</p>
+
+            <input id="comment" placeholder="댓글을 입력해 주세요."> <button onclick="save_insult()">등록</button>
+            <br>
+
+            <!-- 댓글달리는곳 -->
+            <div id="order-box">
+                <!-- <p class="commentcomment">댓글 내용</p>
+                <button onclick="comment_delete()" class="deleteform">삭제</button>
+                <h2></h2> -->
+            </div>
+        </div>
+
+    </div>
+    </div>
+</body>
+
+</html>
